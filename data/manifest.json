@@ -1,0 +1,19 @@
+{
+  "seed": 20260923,
+  "n_factors": 100,
+  "n_days": 2868,
+  "start": "2015-01-05",
+  "end": "2025-12-31",
+  "calendar": "weekdays, not the exchange holiday calendar",
+  "nav_start": 1.0,
+  "excess_identity_max_abs_error": 1.3877787807814457e-17,
+  "median_pairwise_excess_corr_2019": 0.18450217859905055,
+  "files": {
+    "curves.parquet": "long: date, factor_id, nav, excess, port_return",
+    "nav_wide.parquet": "100 NAV curves, columns F000-F099",
+    "excess_wide.parquet": "100 daily excess curves",
+    "benchmark.parquet": "benchmark nav and return, plus the common active factor",
+    "sim_truth.parquet": "simulator audit; not an evaluation label"
+  },
+  "curves_sha256": "3ebb2ea62c75ed3f949f347ca5a3b9f8e2f36cbb62e8403d6de1bd586a92977c"
+}

@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>100 条超额曲线：标准数据集与指标评测</title>
+<style>
+  :root {
+    --paper: #f5f2ea; --paper-deep: #ebe6da;
+    --surface: rgba(255,255,255,0.78); --surface-solid: #fffefa;
+    --ink: #182a32; --ink-soft: #53636a; --line: rgba(24,42,50,0.14);
+    --teal: #0b6f69; --teal-soft: #dceeea;
+    --orange: #c66032; --orange-soft: #f5e4d9;
+    --blue: #315c75; --blue-soft: #e0eaf0;
+    --gold: #9a7421; --gold-soft: #f2ead2;
+    --red: #a33f39; --red-soft: #f3e0de;
+    --purple: #6b4f8a; --purple-soft: #eae2f2;
+    --shadow: 0 18px 50px rgba(28,43,48,0.08);
+    --radius: 18px; --max: 1100px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body {
+    margin: 0; color: var(--ink);
+    background:
+      radial-gradient(circle at 8% -10%, rgba(11,111,105,0.13), transparent 34%),
+      radial-gradient(circle at 96% 8%, rgba(198,96,50,0.11), transparent 28%),
+      var(--paper);
+    font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,sans-serif;
+    font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--teal); text-decoration: none; } a:hover { text-decoration: underline; }
+  .topbar { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); background: rgba(245,242,234,0.92); backdrop-filter: blur(18px); }
+  .topbar-inner { width: min(calc(100% - 32px), var(--max)); min-height: 62px; margin: 0 auto; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 760; letter-spacing: -0.02em; }
+  .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; color: #fff; background: var(--ink); border-radius: 11px; font-family: Georgia, serif; }
+  .nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav a { padding: 5px 10px; border-radius: 9px; color: var(--ink-soft); font-size: 13.5px; font-weight: 600; }
+  .nav a:hover { color: var(--ink); background: var(--paper-deep); text-decoration: none; }
+  .wrap { width: min(calc(100% - 32px), var(--max)); margin: 0 auto; }
+  .hero { padding: 52px 0 8px; }
+  .hero h1 { font-size: clamp(28px,4.4vw,42px); line-height: 1.22; letter-spacing: -0.03em; margin: 14px 0 12px; }
+  .kicker { display: inline-flex; padding: 5px 13px; border-radius: 999px; background: var(--orange-soft); color: var(--orange); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+  .lead { max-width: 860px; color: var(--ink-soft); font-size: 17.5px; }
+  .meta-strip { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 16px; color: var(--ink-soft); font-size: 13.5px; }
+  .meta-strip b { color: var(--ink); }
+  section { padding: 32px 0 4px; }
+  .sec-head { margin-bottom: 16px; }
+  .sec-head .no { font-family: Georgia, serif; font-size: 14px; font-weight: 700; color: var(--orange); letter-spacing: 0.12em; }
+  .sec-head h2 { font-size: clamp(22px,3vw,28px); letter-spacing: -0.02em; margin: 4px 0 6px; }
+  .sec-head p { color: var(--ink-soft); max-width: 860px; margin: 0; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card h3 { margin: 2px 0 8px; font-size: 18px; }
+  .card p { margin: 8px 0; }
+  .card ul, .card ol { margin: 8px 0; padding-left: 22px; }
+  .card li { margin: 4px 0; }
+  .grid { display: grid; gap: 14px; }
+  .grid.c2 { grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); }
+  .grid.c3 { grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
+  .grid .card { margin-bottom: 0; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; margin-right: 6px; white-space: nowrap; }
+  .pill.teal { background: var(--teal-soft); color: var(--teal); }
+  .pill.orange { background: var(--orange-soft); color: var(--orange); }
+  .pill.blue { background: var(--blue-soft); color: var(--blue); }
+  .pill.gold { background: var(--gold-soft); color: var(--gold); }
+  .pill.red { background: var(--red-soft); color: var(--red); }
+  .pill.purple { background: var(--purple-soft); color: var(--purple); }
+  .pill.ink { background: var(--ink); color: #fff; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: var(--surface-solid); }
+  th, td { padding: 9px 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { background: var(--paper-deep); font-size: 12.5px; letter-spacing: 0.03em; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-solid); margin: 12px 0; }
+  code { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 0.88em; background: var(--paper-deep); padding: 1px 6px; border-radius: 6px; }
+  pre { background: #1f2d33; color: #e8eef0; border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 12.5px; line-height: 1.55; }
+  pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+  .callout { border-left: 4px solid var(--teal); background: var(--teal-soft); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 12px 0; }
+  .callout.warn { border-left-color: var(--orange); background: var(--orange-soft); }
+  .callout b:first-child { display: block; margin-bottom: 4px; }
+  .flow { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+  .flow .step { flex: 1 1 140px; background: var(--surface-solid); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; }
+  .flow .step b { display: block; margin-bottom: 4px; }
+  .flow .n { font-family: Georgia, serif; color: var(--orange); font-weight: 700; }
+  .kpi { font-family: Georgia, serif; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; }
+  .kpi span { display: block; font-family: inherit; font-size: 13px; color: var(--ink-soft); font-weight: 600; margin-top: 6px; letter-spacing: 0; }
+  .small { font-size: 13px; color: var(--ink-soft); }
+  footer { margin-top: 40px; padding: 22px 0 36px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 13px; }
+  .chk { list-style: none; padding: 0; margin: 8px 0; }
+  .chk li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px dashed var(--line); }
+  .chk li:last-child { border-bottom: none; }
+  .chk li::before { content: ""; position: absolute; left: 0; top: 12px; width: 14px; height: 14px; border: 1.5px solid var(--teal); border-radius: 4px; }
+  .arch { display: grid; gap: 10px; margin: 12px 0; }
+  .arch .layer { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--surface-solid); display: grid; grid-template-columns: 168px 1fr; gap: 12px; align-items: start; }
+  .arch .layer .name { font-weight: 800; font-size: 14px; }
+  .arch .layer .name small { display: block; font-weight: 600; color: var(--ink-soft); }
+  .arch .layer.l2 { border-left: 5px solid var(--teal); }
+  .arch .layer.l3 { border-left: 5px solid var(--orange); }
+  .arch .layer.l4 { border-left: 5px solid var(--purple); }
+  .arch .layer p { margin: 0; font-size: 14.5px; }
+  @media (max-width: 720px) { .arch .layer { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <div class="brand"><div class="brand-mark">F</div>超额曲线标准数据集</div>
+  <nav class="nav">
+    <a href="#s1">结论</a>
+    <a href="#s2">三类数据</a>
+    <a href="#s3">流水线</a>
+    <a href="#s4">标签</a>
+    <a href="#s5">评测</a>
+    <a href="#s6">执行</a>
+    <a href="#s7">参数</a>
+  </nav>
+</div></div>
+
+<main class="wrap">
+<header class="hero">
+  <span class="kicker">可执行方案 · 100 条优化器超额 · 指标对照</span>
+  <h1>用已有的 100 条超额曲线，做成能比较指标的标准数据集</h1>
+  <p class="lead">曲线提供真实噪声和截面相关性。失效标签由注入的 alpha 路径生成。六个指标在同一误报预算下，按“报警前损失掉多少年健康超额”排名。</p>
+  <div class="meta-strip">
+    <div>日期 <b>2026-09-23</b></div>
+    <div>输入 <b>100 条同一优化器的日超额</b></div>
+    <div>主数据集 <b>注入集</b></div>
+    <div>第一批指标 <b>6 个</b></div>
+    <div>做出第一张排名表 <b>约 2 周</b></div>
+  </div>
+</header>
+
+<section id="s1">
+  <div class="sec-head"><div class="no">01</div><h2>结论与完成标准</h2></div>
+  <div class="callout">
+    <b>标签不从原始曲线上认，从构造过程里写下来。</b>
+    同一优化器的 100 条超额里，共同回撤、约束和成本混在一起，没有人记录过“失效起始日”。用滚动信息比、回撤或人工看图打上的日期，本身就是某个指标的输出，不能再拿来给指标排名。
+  </div>
+  <div class="grid c3">
+    <div class="card"><div class="kpi">258<span>日 · 阶跃归零的参考延迟（CUSUM，5 年误报一次）。第一张表里各指标应落在 250–350 日</span></div></div>
+    <div class="card"><div class="kpi">5.2×<span>波动翻倍而 alpha 不变时，固定波动 CUSUM 的误报放大倍数。自适应指标应明显更小</span></div></div>
+    <div class="card"><div class="kpi">0.1 年<span>宣布一个指标优于 CUSUM 所需的最小损失改善，且任何一个情景格不能更差</span></div></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>这套数据集做成的标志</h3>
+    <ul>
+      <li>注入集上，阶跃归零的中位延迟落在 250–350 个交易日。</li>
+      <li>波动翻倍的格子里，固定波动 CUSUM 的误报明显高于带波动更新的版本。</li>
+      <li>坏了又恢复的格子里，回撤分位和 12 个月同号率会在恢复之后仍保持报警。</li>
+      <li>三张结果对得上，才把这批样本当作尺子，再比其余指标。</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s2">
+  <div class="sec-head">
+    <div class="no">02</div>
+    <h2>数据分成三类</h2>
+    <p>只有第一类进入排名。后两类回答不同的问题，分数不和第一类加总。</p>
+  </div>
+  <div class="arch">
+    <div class="layer l2">
+      <div class="name">Ⅰ 注入集<small>排名用 · 标签已知</small></div>
+      <p>从 100 条真实超额里抽出噪声，加上一条完全已知的 alpha 路径。每个因子一行标签：类型、失效日、逐日 alpha。指标只看见合成后的日超额。</p>
+    </div>
+    <div class="layer l3">
+      <div class="name">Ⅱ 共同事件集<small>真实曲线 · 只评误报聚集</small></div>
+      <p>原始 100 条曲线不动。外部事件日（熔断、期指限仓、微盘急跌）标成“共同冲击，个体 alpha 未改”。指标若在事件后 63 个交易日内让许多因子一起报警，记为共同误报。这是原始曲线上唯一可靠的标签。</p>
+    </div>
+    <div class="layer l4">
+      <div class="name">Ⅲ 否决集<small>不参与排名</small></div>
+      <p>两个人独立、隐去因子名，只保留类型一致且日期区间重叠的少数案例。赢家要在这些区间内报警，同时在“长回撤但 alpha 没变”的注入样本上不报警。案例数量不够就先空着，不阻挡第一张排名表。</p>
+    </div>
+  </div>
+</section>
+
+<section id="s3">
+  <div class="sec-head">
+    <div class="no">03</div>
+    <h2>七步流水线</h2>
+    <p>每步有输入、产出和通过条件。上一步没过，下一步不开始。</p>
+  </div>
+  <div class="flow">
+    <div class="step"><span class="n">1</span><b>冻结曲线</b>日超额对齐</div>
+    <div class="step"><span class="n">2</span><b>拆噪声</b>共同成分 + 高频残差</div>
+    <div class="step"><span class="n">3</span><b>切窗口</b>开发 / 校准 / 封存</div>
+    <div class="step"><span class="n">4</span><b>注入 alpha</b>写出标签</div>
+    <div class="step"><span class="n">5</span><b>校准阈值</b>统一到 5 年一次</div>
+    <div class="step"><span class="n">6</span><b>冒烟三关</b>确认尺子可用</div>
+    <div class="step"><span class="n">7</span><b>封存排名</b>情景 × 指标</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">1</span>冻结曲线</h3>
+    <p>每条曲线存日超额收益，不存累计净值。100 条对齐到同一交易日；缺任何一条的日期，整行删除。记录优化器配置和因子定义的版本号，版本一变就另存一份。</p>
+    <p>产出 <code>curves.parquet</code>，列：<code>date, factor_id, excess</code>。通过条件：100 个因子、日期严格递增、超额的数量级在每日 ±20% 以内、没有整段为 0 的填充。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">2</span>拆成共同成分和噪声</h3>
+    <p>同一优化器的曲线会在同一天一起跌。先取当日 100 条超额的等权平均，作为共同成分 <code>F_t</code>。每个因子对 <code>F_t</code> 的载荷 <code>λ_i</code> 只在开发期回归一次，然后冻结。</p>
+    <p>特质部分 <code>ε_i,t = excess_i,t − λ_i F_t</code>。再减去该因子在窗口内的居中三年滚动均值，得到噪声 <code>e_i,t</code>。这一步只在造数据时使用，指标看不到 <code>F</code>、<code>λ</code> 和 <code>e</code> 的拆分。减掉低频之后，样本里的慢变化只来自即将注入的 alpha；急跌和波动聚集仍留在噪声里。</p>
+    <p>产出 <code>common.parquet</code>（date, F）、<code>loadings.parquet</code>（factor_id, lambda）、<code>noise.parquet</code>（date, factor_id, e）。通过条件：开发期上 <code>e</code> 的三年滚动均值接近 0；<code>F_t</code> 在已知共同冲击日上是大的负数。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">3</span>按日历切成三段</h3>
+    <p>以曲线覆盖的交易日为轴，取最早 50% 为开发期，其后 25% 为校准期，最后 25% 为封存期。载荷、窗口是否可用、指标的公式形态，只用开发期决定。阈值只用开发期加校准期的健康样本来定。封存期的注入种子和结果只跑一次。</p>
+    <p>每个可用窗口长约 8 年，并且整段落在同一个时期里，不跨期。独立窗口数大约两三段。模板可以换多套，样本量仍按“窗口数 × 100”计算。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">4</span>注入 alpha，写下标签</h3>
+    <p>在一个窗口内，用该因子噪声的日波动 <code>σ_i</code> 把目标信息比换成日均超额：</p>
+    <pre><code>μ_i = IR × σ_i / sqrt(244)
+x_i,t = α_i,t + λ_i × F_t + e_i,t</code></pre>
+    <p><code>α_i,t</code> 在失效日之前等于 <code>μ_i</code>（从未有效的因子整段为 0），之后按第 4 节的模板变化。信息比主档用 1.0，再复跑一档 0.5。同一组 <code>F</code> 和 <code>e</code> 配上不同模板，比较指标时按这组噪声配对。</p>
+    <p>产出 <code>episodes.parquet</code>（date, factor_id, window_id, seed, x）和 <code>labels.parquet</code>（第 4 节的字段）。通过条件：把 <code>α</code> 从 <code>x</code> 里减掉，剩余序列的相关系数与 <code>λF + e</code> 为 1；健康因子的样本信息比接近设定值。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">5</span>六个指标，阈值统一校准</h3>
+    <p>每个指标是一个函数：读到第 t 日为止的 <code>x</code>，返回一个分数，分数越高越像失效。作者不交阈值。程序在健康样本上搜索阈值，使首次报警的平均等待时间等于 1220 个交易日（约 5 年一次）。搜索不到的指标只报告它的实际误报间隔，不进入排名结论。</p>
+    <p>第一批六个，全部只看注入后的日超额：单边 CUSUM、用滚动波动更新尺度的 CUSUM、滚动 252 日 t 值、滚动 12 个月同号率、回撤深度的历史分位、Kalman 局部水平模型。</p>
+    <p>因果检查：把 t 日之后的数据改成空值，t 日的分数必须逐位不变。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">6</span>冒烟三关</h3>
+    <p>只在开发期跑。三关都过，才校准封存期。</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>关</th><th>格子</th><th>通过条件</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>阶跃归零</td><td>CUSUM 中位延迟在 250–350 个交易日</td></tr>
+        <tr><td>2</td><td>波动翻倍、alpha 不变</td><td>固定波动 CUSUM 的误报次数 ≥ 自适应 CUSUM 的 2 倍</td></tr>
+        <tr><td>3</td><td>坏 6 个月后恢复</td><td>回撤分位或同号率在恢复之后的报警占比高于 CUSUM</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill ink">7</span>封存期出表</h3>
+    <p>一行一个情景类型，一列一个指标。格子里写报警前损失（年）和中位延迟（日）。CUSUM 列作为参照。封存期阈值不再改。</p>
+  </div>
+</section>
+
+<section id="s4">
+  <div class="sec-head">
+    <div class="no">04</div>
+    <h2>标签字典</h2>
+    <p>每个 8 年窗口里，100 个因子按固定人数分配。分配由种子决定，写进标签，不随指标改变。</p>
+  </div>
+  <div class="table-scroll"><table>
+    <thead><tr><th>类型</th><th>人数</th><th>α 在失效日之后</th><th>这个格子用来看</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill teal">H</span> 健康</td><td>35</td><td>一直等于 μ</td><td>误报。阈值只在这里定</td></tr>
+      <tr><td><span class="pill teal">N</span> 从未有效</td><td>10</td><td>整段为 0</td><td>能否认出“从一开始就没有超额”</td></tr>
+      <tr><td><span class="pill red">D0</span> 阶跃归零</td><td>12</td><td>变为 0</td><td>收益通道的天花板，中位延迟应约 258 日</td></tr>
+      <tr><td><span class="pill orange">D½</span> 衰减一半</td><td>12</td><td>变为 0.5μ</td><td>最接近真实衰减的幅度，延迟应明显长于 D0</td></tr>
+      <tr><td><span class="pill orange">A</span> 慢衰减</td><td>10</td><td>400 个交易日内平滑降到 0.5μ</td><td>滚动一年统计量会特别慢</td></tr>
+      <tr><td><span class="pill blue">C</span> 坏了又恢复</td><td>8</td><td>先降到 −0.5μ，平均 126 日后回到 μ</td><td>谁会在恢复之后仍然判死亡</td></tr>
+      <tr><td><span class="pill gold">Hvol</span> 波动翻倍</td><td>8</td><td>α 不变，噪声标准差 ×2</td><td>固定波动的指标会误报</td></tr>
+      <tr><td><span class="pill purple">E</span> 成本跳升</td><td>5</td><td>毛超额不变，净超额每天多扣一截，相当于信息比少 0.6</td><td>只看毛超额的指标看不见</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">35+10+12+12+10+8+8+5 = 100。失效日放在窗口第 4 年到第 6 年之间，均匀抽取，保证前面有 3 年健康期、后面至少还有 2 年。</p>
+
+  <div class="card">
+    <h3>标签字段</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>字段</th><th>例子</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><code>factor_id</code></td><td>F017</td><td>对应原始曲线</td></tr>
+        <tr><td><code>window_id</code></td><td>dev_2012_2019</td><td>日历窗口，整段位于一个时期</td></tr>
+        <tr><td><code>seed</code></td><td>7</td><td>类型分配和失效日</td></tr>
+        <tr><td><code>type</code></td><td>D0</td><td>上表八类之一</td></tr>
+        <tr><td><code>tau</code></td><td>2016-04-18 或空</td><td>H 和 N 为空</td></tr>
+        <tr><td><code>alpha</code></td><td>逐日序列</td><td>真实超额，评分用它</td></tr>
+        <tr><td><code>ir_target</code></td><td>1.0</td><td>0.5 或 1.0</td></tr>
+        <tr><td><code>sigma_i</code></td><td>0.0042</td><td>该曲线噪声的日波动，用来把信息比换成日超额</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>另做一小组“长回撤未死”</h3>
+    <p>在健康模板上，从真实噪声里挑选已经包含一段 2–3 年深回撤、之后修复的窗口，alpha 保持不变。这个小组不占上面的 100 人配额，单独存。它用来量“过早判死”：回撤分位在这里报警，记为误报。</p>
+  </div>
+</section>
+
+<section id="s5">
+  <div class="sec-head">
+    <div class="no">05</div>
+    <h2>怎样算一个指标更有效</h2>
+    <p>先把误报率对齐，再比损失。检出率单独看会被“报警更勤”抬高。</p>
+  </div>
+  <div class="grid c2">
+    <div class="card">
+      <h3>主指标 · 报警前损失</h3>
+      <pre><code>L = 1/(244 × μ) × Σ (μ − α_t)
+求和从失效日到 min(报警日, 失效日+488 个交易日)
+单位：健康 alpha 的年数</code></pre>
+      <p>阶跃归零时，L 就是延迟的年数。慢衰减时，同样的天数损失更小。488 日内没有报警，就在第 488 日截断，损失是有限的。</p>
+    </div>
+    <div class="card">
+      <h3>辅指标 · 校正检出率</h3>
+      <p>2 年内报警的比例，减去健康样本上任意 2 年窗口里会报警的比例。5 年一次误报时，瞎报警也会撞上大约 33% 的失效，所以原始检出率要减去这一截。</p>
+      <p>同时给出延迟的中位数。只对已经报警的样本平均延迟，会把没抓住的案例藏起来，所以中位数和检出率写在同一格。</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>判定</h3>
+    <p>同一组噪声上配对比较。一个指标相对 CUSUM 更有效，需要三件事同时成立：损失的置信区间下沿至少好 0.1 年；按窗口配对的胜率经过多重比较校正后仍站得住；八个类型里没有任何一类比 CUSUM 差过 0.1 年。否则记为“有取舍”，不宣布单一赢家。</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>格子</th><th>期望看到的格局</th></tr></thead>
+      <tbody>
+        <tr><td>D0 阶跃归零</td><td>六个指标挤在 250–350 日。明显更快的那个，先核对它在 H 上的误报是不是已经短于 5 年</td></tr>
+        <tr><td>D½ 与 A</td><td>全体都比 D0 慢。这里拉开差距的通常是信息不够，而不是公式差异</td></tr>
+        <tr><td>Hvol</td><td>固定波动 CUSUM 损失变大；尺度会更新的版本留下</td></tr>
+        <tr><td>C 与长回撤未死</td><td>回撤分位、同号率误报多；报警后能收回的指标更好</td></tr>
+        <tr><td>E 成本</td><td>只看毛超额的分数几乎不报警；看净超额的会报警</td></tr>
+        <tr><td>共同事件集</td><td>事件后 63 日内报警的因子数。逐因子 CUSUM 会成片报警；先减去 F_t 再检测的应接近平时的误报水平</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="s6">
+  <div class="sec-head">
+    <div class="no">06</div>
+    <h2>两周执行单</h2>
+    <p>一个人可以做完第一张表。第 6 步没过就停下来查构造，不进入封存排名。</p>
+  </div>
+  <div class="grid c2">
+    <div class="card">
+      <h3>第 1 周 · 造出样本</h3>
+      <ul class="chk">
+        <li>导出 100 条日超额，写成 <code>curves.parquet</code>，核对行数和版本号</li>
+        <li>计算 <code>F_t</code> 和开发期载荷，冻结存档</li>
+        <li>写出噪声，检查三年滚动均值接近 0</li>
+        <li>定下开发 / 校准 / 封存的日期边界，写进配置</li>
+        <li>按 100 人配额注入开发期的一个窗口，人工抽 3 条把图和标签对上</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>第 2 周 · 排出名次</h3>
+      <ul class="chk">
+        <li>接上六个指标，每个补上“未来改空值、分数不变”的检查</li>
+        <li>在健康样本上把阈值调到约 1220 日</li>
+        <li>跑冒烟三关。不过关就改构造，不改阈值去凑数</li>
+        <li>封存期全量注入，出“类型 × 指标”的损失表</li>
+        <li>用原始曲线跑共同事件集，记下 63 日内一起报警的因子个数</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>文件清单</h3>
+    <pre><code>configs/dataset_v1.yaml      日期边界、人数配额、信息比、阈值目标
+data/curves.parquet          原始日超额
+data/common.parquet          共同成分 F_t
+data/loadings.parquet        冻结的 λ_i
+data/noise.parquet           高频噪声 e
+data/episodes.parquet        指标看到的 x
+data/labels.parquet          类型、tau、alpha
+data/events.csv              共同事件日
+results/thresholds.csv       每个指标的阈值和实际误报间隔
+results/score_sealed.csv     封存期损失表
+results/common_shock.csv     事件后 63 日报警因子数</code></pre>
+  </div>
+</section>
+
+<section id="s7">
+  <div class="sec-head">
+    <div class="no">07</div>
+    <h2>默认参数</h2>
+    <p>直接写进配置。要改，只改这一处，并同时改数据集版本号。</p>
+  </div>
+  <div class="card">
+    <pre><code>version: v1
+trading_days_per_year: 244
+window_years: 8
+warmup_years: 3
+tau_year_range: [4, 6]
+observe_days: 488          # 约 2 年
+false_alarm_days: 1220     # 约 5 年一次
+min_loss_gap_years: 0.1    # 相对 CUSUM 的最小差距
+ir_targets: [1.0, 0.5]
+common_factor: equal_weight_mean
+loading_fit: dev_only
+highpass: centered_3y_mean
+counts: {H: 35, N: 10, D0: 12, Dhalf: 12, A: 10, C: 8, Hvol: 8, E: 5}
+A_transition_days: 400
+A_floor: 0.5
+C_bad_ir: -0.5
+C_bad_days: 126
+Hvol_scale: 2.0
+E_ir_cost: 0.6
+shock_window_days: 63
+split: {dev: 0.50, cal: 0.25, sealed: 0.25}   # 按日历从早到晚</code></pre>
+  </div>
+  <div class="card">
+    <h3>原始曲线上先做的三件核对</h3>
+    <ul>
+      <li>日超额对累计净值做差分，最大误差小于 10<sup>−6</sup>。对不上就以日超额为准，累计曲线退出数据集。</li>
+      <li>任意一天，100 条超额的相关系数矩阵里，中位数相关若高于 0.5，共同成分这一步就不可省略。</li>
+      <li>开发期载荷冻结后，换到校准期，<code>F_t</code> 仍能解释各曲线方差的主要共同部分。解释不了，就把共同成分改成校准期可见的扩展窗口均值，并升版本号。</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  执行方案 v1 · 2026-09-23。排名只使用注入集；共同事件集只评误报聚集；人工案例只做否决。正式数字以 <code>configs/dataset_v1.yaml</code> 为准。
+</footer>
+</main>
+</body>
+</html>

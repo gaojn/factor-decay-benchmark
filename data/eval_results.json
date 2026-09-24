@@ -1,0 +1,458 @@
+{
+  "thresholds": {
+    "CUSUM": 25.904326871667834,
+    "CUSUM_EWMA": 25.742290154477544,
+    "RollT252": 0.6212111024688884,
+    "SignRate12": 0.583333432674408,
+    "Drawdown": 19.1475066820704,
+    "Kalman": 0.5414086605970126
+  },
+  "shock_feb2024_cusum_ewma": {
+    "raw": 42,
+    "stripped": 71
+  },
+  "rows": [
+    {
+      "n": 165,
+      "pre_alarm": 0.34,
+      "hit_2y": 0.3575757575757576,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "H",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 165,
+      "pre_alarm": 0.34,
+      "hit_2y": 0.3939393939393939,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "H",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 182,
+      "pre_alarm": 0.272,
+      "hit_2y": 0.36813186813186816,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "H",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 210,
+      "pre_alarm": 0.16,
+      "hit_2y": 0.2,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "H",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 171,
+      "pre_alarm": 0.316,
+      "hit_2y": 0.3684210526315789,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "H",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 140,
+      "pre_alarm": 0.44,
+      "hit_2y": 0.29285714285714287,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "H",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 250,
+      "pre_alarm": 0.0,
+      "hit_2y": 0.96,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "N",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 250,
+      "pre_alarm": 0.0,
+      "hit_2y": 0.956,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "N",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 250,
+      "pre_alarm": 0.0,
+      "hit_2y": 0.948,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "N",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 250,
+      "pre_alarm": 0.0,
+      "hit_2y": 0.8,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "N",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 250,
+      "pre_alarm": 0.0,
+      "hit_2y": 0.916,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "N",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 250,
+      "pre_alarm": 0.0,
+      "hit_2y": 0.996,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "N",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 185,
+      "pre_alarm": 0.26,
+      "hit_2y": 0.7027027027027027,
+      "delay_med": 195.0,
+      "loss_mean": 1.1864864864864866,
+      "kind": "D0",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 187,
+      "pre_alarm": 0.252,
+      "hit_2y": 0.7433155080213903,
+      "delay_med": 184.0,
+      "loss_mean": 1.1396510914350837,
+      "kind": "D0",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 189,
+      "pre_alarm": 0.244,
+      "hit_2y": 0.7777777777777778,
+      "delay_med": 201.0,
+      "loss_mean": 1.1313860699106602,
+      "kind": "D0",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 217,
+      "pre_alarm": 0.132,
+      "hit_2y": 0.5529953917050692,
+      "delay_med": 273.0,
+      "loss_mean": 1.4683085291229132,
+      "kind": "D0",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 186,
+      "pre_alarm": 0.256,
+      "hit_2y": 0.6774193548387096,
+      "delay_med": 182.5,
+      "loss_mean": 1.2058214348669134,
+      "kind": "D0",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 167,
+      "pre_alarm": 0.332,
+      "hit_2y": 0.6706586826347305,
+      "delay_med": 253.0,
+      "loss_mean": 1.3277461470501621,
+      "kind": "D0",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 190,
+      "pre_alarm": 0.24,
+      "hit_2y": 0.531578947368421,
+      "delay_med": 247.0,
+      "loss_mean": 0.7293248490077653,
+      "kind": "Dhalf",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 192,
+      "pre_alarm": 0.232,
+      "hit_2y": 0.5208333333333334,
+      "delay_med": 231.0,
+      "loss_mean": 0.7264450990437159,
+      "kind": "Dhalf",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 199,
+      "pre_alarm": 0.204,
+      "hit_2y": 0.5527638190954773,
+      "delay_med": 239.0,
+      "loss_mean": 0.7145049015569652,
+      "kind": "Dhalf",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 225,
+      "pre_alarm": 0.1,
+      "hit_2y": 0.40444444444444444,
+      "delay_med": 252.0,
+      "loss_mean": 0.8053642987249544,
+      "kind": "Dhalf",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 200,
+      "pre_alarm": 0.2,
+      "hit_2y": 0.525,
+      "delay_med": 196.0,
+      "loss_mean": 0.7025307377049179,
+      "kind": "Dhalf",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 155,
+      "pre_alarm": 0.38,
+      "hit_2y": 0.4645161290322581,
+      "delay_med": 232.5,
+      "loss_mean": 0.7602062400846114,
+      "kind": "Dhalf",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 176,
+      "pre_alarm": 0.296,
+      "hit_2y": 0.4659090909090909,
+      "delay_med": 284.0,
+      "loss_mean": 0.4165771411605812,
+      "kind": "A",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 174,
+      "pre_alarm": 0.304,
+      "hit_2y": 0.46551724137931033,
+      "delay_med": 280.0,
+      "loss_mean": 0.41503509515733933,
+      "kind": "A",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 187,
+      "pre_alarm": 0.252,
+      "hit_2y": 0.48128342245989303,
+      "delay_med": 292.0,
+      "loss_mean": 0.4174692075041641,
+      "kind": "A",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 211,
+      "pre_alarm": 0.156,
+      "hit_2y": 0.3080568720379147,
+      "delay_med": 294.0,
+      "loss_mean": 0.47678662302851377,
+      "kind": "A",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 178,
+      "pre_alarm": 0.288,
+      "hit_2y": 0.47752808988764045,
+      "delay_med": 281.0,
+      "loss_mean": 0.42199343226192665,
+      "kind": "A",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 144,
+      "pre_alarm": 0.424,
+      "hit_2y": 0.3402777777777778,
+      "delay_med": 304.0,
+      "loss_mean": 0.4778697774362477,
+      "kind": "A",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 158,
+      "pre_alarm": 0.368,
+      "hit_2y": 0.5253164556962026,
+      "delay_med": 103.0,
+      "loss_mean": 0.6601992114546588,
+      "kind": "C",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 163,
+      "pre_alarm": 0.348,
+      "hit_2y": 0.5337423312883436,
+      "delay_med": 106.0,
+      "loss_mean": 0.6577868852459016,
+      "kind": "C",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 174,
+      "pre_alarm": 0.304,
+      "hit_2y": 0.5574712643678161,
+      "delay_med": 122.0,
+      "loss_mean": 0.6674674957603166,
+      "kind": "C",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 196,
+      "pre_alarm": 0.216,
+      "hit_2y": 0.3979591836734694,
+      "delay_med": 105.0,
+      "loss_mean": 0.6909396955503511,
+      "kind": "C",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 162,
+      "pre_alarm": 0.352,
+      "hit_2y": 0.5123456790123457,
+      "delay_med": 90.0,
+      "loss_mean": 0.6450364298724954,
+      "kind": "C",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 133,
+      "pre_alarm": 0.468,
+      "hit_2y": 0.45112781954887216,
+      "delay_med": 104.0,
+      "loss_mean": 0.6788179465056083,
+      "kind": "C",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 188,
+      "pre_alarm": 0.248,
+      "hit_2y": 0.8936170212765957,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "Hvol",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 186,
+      "pre_alarm": 0.256,
+      "hit_2y": 0.6021505376344086,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "Hvol",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 192,
+      "pre_alarm": 0.232,
+      "hit_2y": 0.5885416666666666,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "Hvol",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 213,
+      "pre_alarm": 0.148,
+      "hit_2y": 0.38497652582159625,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "Hvol",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 182,
+      "pre_alarm": 0.272,
+      "hit_2y": 0.967032967032967,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "Hvol",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 159,
+      "pre_alarm": 0.364,
+      "hit_2y": 0.6477987421383647,
+      "delay_med": null,
+      "loss_mean": null,
+      "kind": "Hvol",
+      "indicator": "Kalman"
+    },
+    {
+      "n": 162,
+      "pre_alarm": 0.352,
+      "hit_2y": 0.5246913580246914,
+      "delay_med": 205.0,
+      "loss_mean": 0.871584699453552,
+      "kind": "E",
+      "indicator": "CUSUM"
+    },
+    {
+      "n": 165,
+      "pre_alarm": 0.34,
+      "hit_2y": 0.5272727272727272,
+      "delay_med": 194.0,
+      "loss_mean": 0.8483457526080477,
+      "kind": "E",
+      "indicator": "CUSUM_EWMA"
+    },
+    {
+      "n": 178,
+      "pre_alarm": 0.288,
+      "hit_2y": 0.5730337078651685,
+      "delay_med": 203.5,
+      "loss_mean": 0.8271550930189723,
+      "kind": "E",
+      "indicator": "RollT252"
+    },
+    {
+      "n": 208,
+      "pre_alarm": 0.168,
+      "hit_2y": 0.375,
+      "delay_med": 220.5,
+      "loss_mean": 0.9635088272383354,
+      "kind": "E",
+      "indicator": "SignRate12"
+    },
+    {
+      "n": 172,
+      "pre_alarm": 0.312,
+      "hit_2y": 0.5,
+      "delay_med": 189.0,
+      "loss_mean": 0.8701057948913458,
+      "kind": "E",
+      "indicator": "Drawdown"
+    },
+    {
+      "n": 148,
+      "pre_alarm": 0.408,
+      "hit_2y": 0.44594594594594594,
+      "delay_med": 233.5,
+      "loss_mean": 0.9427503322995127,
+      "kind": "E",
+      "indicator": "Kalman"
+    }
+  ],
+  "settings": {
+    "ARL0": 1220,
+    "IR": 1.0,
+    "N_CAL": 400,
+    "N_EVAL": 250,
+    "warmup": 504,
+    "tau": 756,
+    "T": 2200,
+    "D": 488
+  }
+}
